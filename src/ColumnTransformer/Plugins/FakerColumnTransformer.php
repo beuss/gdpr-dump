@@ -16,6 +16,7 @@ class FakerColumnTransformer extends ColumnTransformer
         'longText' => 'paragraph',
         'number' => 'randomNumber',
         'uri' => 'url',
+        'format' => null,
     ];
 
 
@@ -43,6 +44,10 @@ class FakerColumnTransformer extends ColumnTransformer
 
     public function getValue($expression)
     {
-        return self::$generator->format(self::$formatterTansformerMap[$expression['formatter']], $expression['args']);
+        if($expression['formatter'] === 'format') {
+            return self::$generator->parse($expression['format']);
+        } else {
+            return self::$generator->format(self::$formatterTansformerMap[$expression['formatter']], $expression['args']);
+        }
     }
 }
